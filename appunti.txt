@@ -1,0 +1,80 @@
+chiamata al db:
+fetch("http://localhost:8080/alunni", {method: "GET"}).then((response) =>
+      console.log(response)
+    );
+
+dichiarazione di un array
+const a=[
+      {id:1, nome:"clausio", cognome: "benve"},
+      {id:2, nome:"claudio", cognome: "bisio"},
+      {id:3, nome:"ivan", cognome: "bruno"},
+    ];
+
+classe alunni
+<Alunno voto=(10) nome="alessio"/>
+
+classe alunno:
+import {useState} from 'react';
+
+export default function Alunno(id, nome){
+
+    const [contatore, setContatore] = useState(0);
+
+    function incrementaid(){
+        setContatore(contatore + 1)
+    }
+
+    return (
+    <div> 
+        sono il {nome} 
+        <button onclick={incrementaid}>{contatore}</button>
+    </div>
+    )
+}
+//ogni alunno avrà un bottone che cliccandolo incrementa lo stato
+
+per rendere una funzione asincrona metto async alla funzione e await al fetch
+
+
+import './App.css';
+import Alunno from './Alunno';
+import {useEffect, useState} from 'react';
+
+
+function App() {
+  
+  useEffect(() =>(
+    popolaAlunni()
+  ),[]);
+
+  const [alunni, setAlunni] = useState([]);
+  const [pronto, setPronto] = useState(false);
+
+  async function popolaAlunni(){
+    const a=[
+      {id:1, nome:"clausio", cognome: "benve"},
+      {id:2, nome:"claudio", cognome: "bisio"},
+      {id:3, nome:"ivan", cognome: "bruno"},
+    ];
+    const response = await fetch("http://localhost:8080/alunni", {method: "GET"}).then((response));
+    const array = await response.json();
+
+    setAlunni(array);
+  }
+  
+
+  return (
+    <div className="App">
+      {
+      
+        if(pronto) ?
+        alunni.map(a => (
+          <Alunno id={a.id} nome={a.nome} key={a.key}/>
+        ))
+      
+      }
+    </div>
+  );
+}
+
+export default App;

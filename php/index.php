@@ -8,4 +8,6 @@ $app = AppFactory::create();
 
 $app->get('/alunni', "AlunniController:index");
 
+$app->delete('/alunni/{id}', "AlunniController:deleteAlunno");
+
 $app->run();
