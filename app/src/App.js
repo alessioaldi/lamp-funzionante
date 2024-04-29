@@ -12,6 +12,7 @@ function App() {
   const [alunni, setAlunni] = useState([]);
   const [pronto, setpronto] = useState(false);
   const [mostraForm, setMostraForm] = useState(false);
+  const [mostraFormUp, setMostraFormUp] = useState(false);
 
   async function popolaAlunni(){
     const response = await fetch("http://localhost:8080/alunni", {method: "GET"});
@@ -34,8 +35,16 @@ function App() {
       <button onClick={() => setMostraForm(true)}>Inserisci nuovo alunno</button>
       { mostraForm &&
         <div>
-          <div><FormDiInserimento /></div>
+          <div><FormDiInserimento popolaAlunni={popolaAlunni} /></div>
           <button onClick={() => setMostraForm(false)}>Annulla inserimento</button>
+        </div>
+      }
+
+      <button onClick={() => setMostraFormUp(true)}>update alunno</button>
+      { mostraFormUp &&
+        <div>
+          <div><FormDiUpdate popolaAlunni={popolaAlunni} /></div>
+          <button onClick={() => setMostraFormUp(false)}>Annulla inserimento</button>
         </div>
       }
     </div>
