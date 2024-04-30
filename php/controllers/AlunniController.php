@@ -35,13 +35,14 @@ class AlunniController
     return $response->withHeader("Content-type", "application/json")->withStatus(201);
   }
 
-  public function update(Request $request, Response $response, $args){
+  public function put(Request $request, Response $response, $args){
     $mysqli_connection = new MySQLi('my_mariadb', 'root', 'ciccio', 'scuola');
     $alunno = json_decode($request->getBody(), true);
     $nome = $alunno["nome"];
-    $cognome = $alunno["cognome"] ;
+    $cognome = $alunno["cognome"];
+    $id = $args["id"];
 
-    $result = $mysqli_connection->query("UPDATE alunni SET nome = $nome, cognome = $cognome WHERE id = $id");
+    $result = $mysqli_connection->query("UPDATE alunni SET nome = '$nome', cognome = '$cognome' WHERE id = $id");
 
     $response->getBody()->write(json_encode($alunno));
     return $response->withHeader("Content-type", "application/json")->withStatus(201);

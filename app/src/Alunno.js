@@ -3,7 +3,9 @@ import {useState} from 'react';
 export default function Alunno({alunno, popolaAlunni}){
     const [inCancellazione, setInCancellazione] = useState(false);
     const [richiestaConferma, setRichiestaConferma] = useState(false);
-
+    const [nome, setNome] = useState("");
+    const [cognome, setCognome] = useState("");
+    const [up, mostraUp] = useState(false);
 
     async function cancellaAlunno(){
         setRichiestaConferma(false);
@@ -11,6 +13,19 @@ export default function Alunno({alunno, popolaAlunni}){
         await fetch(`http://localhost:8080/alunni/${alunno.id}`, {method: "DELETE"});
         popolaAlunni();
     }
+
+    async function salvaAlunno(){
+        mostraUp(false);
+        await fetch(`http://localhost:8080/alunni/${alunno.id}`, 
+            {  
+              method: "PUT",
+              headers: { 'Content-Type': 'application/json'},
+              body: JSON.stringify({nome: nome, cognome: cognome})
+            }
+        );
+        popolaAlunni();
+    }
+
     function richiesta(){
         setRichiestaConferma(true);
     }
@@ -18,9 +33,17 @@ export default function Alunno({alunno, popolaAlunni}){
     function annulla(){
         setRichiestaConferma(false);
     }
+
+    function gestisciCambioNome(e){
+        setNome(e.target.value);
+    }
+
+    function gestisciCambioCognome(e){
+        setCognome(e.target.value);
+    }
     return(
         <div>
-            {alunno.nome} {alunno.cognome}
+            {alunno.id} {alunno.nome} {alunno.cognome}
             
             { richiestaConferma ?
                 <span>Sei sicuro? 
@@ -33,6 +56,19 @@ export default function Alunno({alunno, popolaAlunni}){
             { inCancellazione &&
                 <span>in fase di cancellazione </span>
             }
+
+            { up ?
+                <span>
+                    <input type="text" onChange={gestisciCambioNome} placeholder='nome'/>
+                    <input type="text"  onChange={gestisciCambioCognome} placeholder='cognome'/>
+                    <button onClick={salvaAlunno}>salva</button>
+                    <button onClick={() =>  mostraUp(false)}>annulla</button>
+                </span>
+
+                :
+                <button onClick={() => mostraUp(true)}>update</button>
+            }
+
             <hr />
 
         </div>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 
-export default function FormDiInserimento(popolaAlunni){
+export default function FormDiInserimento({popolaAlunni}){
     const [nome, setNome] = useState("");
     const [cognome, setCognome] = useState("");
 
