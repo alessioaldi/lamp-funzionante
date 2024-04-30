@@ -36,6 +36,7 @@ class AlunniController
   }
 
   public function put(Request $request, Response $response, $args){
+    sleep(2);
     $mysqli_connection = new MySQLi('my_mariadb', 'root', 'ciccio', 'scuola');
     $alunno = json_decode($request->getBody(), true);
     $nome = $alunno["nome"];

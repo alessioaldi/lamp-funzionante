@@ -2,6 +2,7 @@ import {useState} from 'react';
 
 export default function Alunno({alunno, popolaAlunni}){
     const [inCancellazione, setInCancellazione] = useState(false);
+    const [inUpdate, setInUpdate] = useState(false);
     const [richiestaConferma, setRichiestaConferma] = useState(false);
     const [nome, setNome] = useState("");
     const [cognome, setCognome] = useState("");
@@ -16,6 +17,7 @@ export default function Alunno({alunno, popolaAlunni}){
 
     async function salvaAlunno(){
         mostraUp(false);
+        setInUpdate(true);
         await fetch(`http://localhost:8080/alunni/${alunno.id}`, 
             {  
               method: "PUT",
@@ -23,6 +25,7 @@ export default function Alunno({alunno, popolaAlunni}){
               body: JSON.stringify({nome: nome, cognome: cognome})
             }
         );
+        setInUpdate(false);
         popolaAlunni();
     }
 
@@ -59,14 +62,17 @@ export default function Alunno({alunno, popolaAlunni}){
 
             { up ?
                 <span>
-                    <input type="text" onChange={gestisciCambioNome} placeholder='nome'/>
-                    <input type="text"  onChange={gestisciCambioCognome} placeholder='cognome'/>
+                    <input type="text" onChange={gestisciCambioNome} value={alunno.nome}/>
+                    <input type="text"  onChange={gestisciCambioCognome} value={alunno.cognome}/>
                     <button onClick={salvaAlunno}>salva</button>
                     <button onClick={() =>  mostraUp(false)}>annulla</button>
                 </span>
 
                 :
                 <button onClick={() => mostraUp(true)}>update</button>
+            }
+            { inUpdate &&
+                <span>in fase di modifica</span>
             }
 
             <hr />
