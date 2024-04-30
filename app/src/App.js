@@ -19,6 +19,7 @@ function App() {
     const array = await response.json();
     setAlunni(array);
     setpronto(true);
+    setMostraForm(false);
   }
 
   return (
